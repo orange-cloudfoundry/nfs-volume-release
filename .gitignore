@@ -31,6 +31,7 @@ src/golang.org/
 
 #intellij goo
 *.iml
+.idea/
 
 # gosub and friends
 src/github.com/vito/gosub
