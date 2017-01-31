@@ -46,3 +46,11 @@ properties:
   nfsbroker.dbName:
     default: ""
     description: "(optional) database name when using SQL to store broker state"
+  nfsbroker.source_params:
+    description: "Comma separated list of white-listed options that may be configured in supported in the mount_config.source URL query params, formatted as 'option:default'. If an option is not specified in the volume mount, then the specified default value will be used instead."
+    example: "uid:1000,gid:1000,auto-traverse-mounts=1,dircache=0"
+    default: "uid:1000,gid:1000"
+  nfsbroker.mount_options:
+    description: "Comma separated list of white-listed options that may be configured in the mount_config options, formatted as 'option:default'. If an option is not specified in the volume mount, then the specified default value will be used instead. A specific floppy_mount option tells the driver to ignore unsupported options when set to true, or to fail fast instead when receiving an unsupported option when set to false"
+    example: "allow_root:false, allow_other:false, nfs_uid:2000, nfs_gid:2000, auto_cache:true, floppy_mount:true"
+    default: "auto_cache:true"
