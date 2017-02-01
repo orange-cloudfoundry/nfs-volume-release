@@ -42,6 +42,7 @@ case $1 in
       --dbHostname="<%= p("nfsbroker.dbHostname") %>" \
       --dbPort="<%= p("nfsbroker.dbPort") %>" \
       --dbName="<%= p("nfsbroker.dbName") %>" \
+      --config="<%= p("nfsbroker.config") %>" \
       2> >(tee -a $LOG_DIR/nfsbroker.stderr.log | logger -p user.error -t vcap.nfsbroker) \
       1> >(tee -a $LOG_DIR/nfsbroker.stdout.log | logger -p user.info -t vcap.nfsbroker)
 

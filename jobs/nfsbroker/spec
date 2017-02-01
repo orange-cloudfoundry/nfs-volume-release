@@ -46,6 +46,9 @@ properties:
   nfsbroker.dbName:
     default: ""
     description: "(optional) database name when using SQL to store broker state"
+  nfsbroker.config:
+    default: "./config.yml"
+    description: "(optional) location for the nfsbroker config file"
   nfsbroker.source_params:
     description: "Comma separated list of white-listed options that may be configured in supported in the mount_config.source URL query params, formatted as 'option:default'. If an option is not specified in the volume mount, then the specified default value will be used instead."
     example: "uid:1000,gid:1000,auto-traverse-mounts=1,dircache=0"
