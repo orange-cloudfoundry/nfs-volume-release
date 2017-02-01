@@ -26,6 +26,9 @@ properties:
  nfsv3driver.log_level:
    description: "nfsv3driver log level"
    default: "info"
+ nfsv3driver.config:
+   description: "(optional) location for the nfsv3driver config file"
+   default: "./config.yml"
  nfsv3driver.source_params:
    description: "Comma separated list of white-listed options that may be configured in supported in the mount_config.source URL query params, formatted as 'option:default'. If an option is not specified in the volume mount, then the specified default value will be used instead."
    example: "uid:1000,gid:1000,auto-traverse-mounts=1,dircache=0"

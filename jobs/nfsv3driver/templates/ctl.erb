@@ -53,6 +53,7 @@ case $1 in
       --driversPath="<%= p("nfsv3driver.driver_path") %>" \
       --mountDir="<%= p("nfsv3driver.cell_mount_path") %>" \
       --logLevel="<%= p("nfsv3driver.log_level") %>" \
+      --config="<%= p("nfsv3driver.config") %>" \
       2> >(tee -a $LOG_DIR/nfsv3driver.stderr.log | logger -p user.error -t vcap.nfsv3driver) \
       1> >(tee -a $LOG_DIR/nfsv3driver.stdout.log | logger -p user.info -t vcap.nfsv3driver)
 
