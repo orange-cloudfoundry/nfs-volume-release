@@ -50,13 +50,16 @@ cat << EOF > ${CONFIG}
       "name_prefix": "PATs",
       "server_addr": "${10}",
       "share": "${11}",
-      "bind_config": "{\"uid\":\"1000\",\"gid\":\"1000\"}"
+      "bind_config": "{\"uid\":\"1000\",\"gid\":\"1000\"}",
+      "pushed_broker_name": "${12}",
+      "sql_service_name": "${13}"
     }
 EOF
 
     export TEST_APPLICATION_PATH="${PWD}/../src/code.cloudfoundry.org/persi-acceptance-tests/assets/pora"
+    export ASSETS_PATH="${PWD}/../src/code.cloudfoundry.org/persi-acceptance-tests/assets"
 
     pushd  ../src/code.cloudfoundry.org/persi-acceptance-tests
-        CONFIG=${CONFIG} ginkgo -r .
+        TEST_MULTI_CELL=true TEST_MOUNT_OPTIONS=true CONFIG=${CONFIG} ginkgo  --slowSpecThreshold=300 -r .
     popd
 popd

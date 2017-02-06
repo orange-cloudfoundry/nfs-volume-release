@@ -2,6 +2,6 @@
 builds:
   db3153794b12044b7fe5c9ad10105dcc846bcde1:
     version: db3153794b12044b7fe5c9ad10105dcc846bcde1
-    sha1: b07c4ba4ac7e847ffbd9774b16f57b1acee1c731
-    blobstore_id: 7be37fbe-5078-4eda-a263-b0d54c4f553f
+    sha1: 3b62c7156cd705556ddb8a2d30d3f83213070ae2
+    blobstore_id: 0e048e4d-ce88-4b63-93c1-adbe854f1b49
 format-version: '2'
