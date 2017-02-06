@@ -6,7 +6,6 @@ templates:
   ctl.erb: bin/nfsv3driver_ctl
 
 packages:
-- nfs_pid_utils
 - fuse-nfs
 - nfsv3driver
 
@@ -26,6 +25,9 @@ properties:
  nfsv3driver.log_level:
    description: "nfsv3driver log level"
    default: "info"
+ nfsv3driver.disable:
+   description: "disable nfsv3driver"
+   default: false
  nfsv3driver.config:
    description: "(optional) location for the nfsv3driver config file"
    default: "./config.yml"
@@ -37,3 +39,4 @@ properties:
    description: "Comma separated list of white-listed options that may be configured in the mount_config options, formatted as 'option:default'. If an option is not specified in the volume mount, then the specified default value will be used instead. A specific floppy_mount option tells the driver to ignore unsupported options when set to true, or to fail fast instead when receiving an unsupported option when set to false"
    example: "allow_root:false, allow_other:false, nfs_uid:2000, nfs_gid:2000, auto_cache:true, floppy_mount:true"
    default: "auto_cache:true"
+

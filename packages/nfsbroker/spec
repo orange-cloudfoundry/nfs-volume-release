@@ -12,7 +12,7 @@ files:
   - code.cloudfoundry.org/goshims/osshim/*.go # gosub
   - code.cloudfoundry.org/goshims/sqlshim/*.go # gosub
   - code.cloudfoundry.org/lager/*.go # gosub
-  - code.cloudfoundry.org/nfsbroker/cmd/nfsbroker/*.go # gosub
+  - code.cloudfoundry.org/nfsbroker/*.go # gosub
   - code.cloudfoundry.org/nfsbroker/nfsbroker/*.go # gosub
   - code.cloudfoundry.org/nfsbroker/utils/*.go # gosub
   - github.com/go-sql-driver/mysql/*.go # gosub

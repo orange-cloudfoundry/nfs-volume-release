@@ -120,13 +120,29 @@ This technique allows you to co-locate bosh jobs on cells without editing the Di
 
 ## Deploying nfsbroker
 
-### Create Stub Files
+The nfsbroker can be deployed in two ways; as a cf app or as a BOSH deployment.  The choice is yours!
 
-#### cf.yml
+### Way #1 `cf push` the broker
+
+When the service broker is `cf push`ed, it must be bound to a MySql or Postgres database service instance.  (Since Cloud Foundry applications are stateless, it is not safe to store state on the local filesystem, so we require a database to do simple bookkeeping.)
+
+Once you have a database service instance available in the space where you will push your service broker application, follow the following steps:
+- `cd src/code.cloudfoundry.org/nfsbroker`
+- run `cp-file.sh` to copy dependencies from the gopath into a vendor directory
+- edit `manifest.yml` to set up broker username/password and sql db driver name and cf service name.  If you are using the [cf-mysql-release](http://bosh.io/releases/github.com/cloudfoundry/cf-mysql-release) from bosh.io, then the database parameters in manifest.yml will already be correct.
+- `cf push <broker app name> --no-start`
+- `cf bind-service <broker app name> <sql service instance name>`
+- `cf start <broker app name>`
+
+### Way #2 - `bosh deploy` the broker
+
+#### Create Stub Files
+
+##### cf.yml
 
 * copy your cf.yml that you used during cf deployment, or download it from bosh: `bosh download manifest [your cf deployment name] > cf.yml`
 
-#### director.yml
+##### director.yml
 * determine your bosh director uuid by invoking bosh status --uuid
 * create a new director.yml file and place the following contents into it:
 
@@ -135,7 +151,7 @@ This technique allows you to co-locate bosh jobs on cells without editing the Di
     director_uuid: <your uuid>
     ```
 
-#### iaas.yml
+##### iaas.yml
 
 * Create a stub for your iaas settings from the following template:
 
@@ -187,12 +203,13 @@ This technique allows you to co-locate bosh jobs on cells without editing the Di
 
 NB: manually edit to fix hard-coded ip ranges, security groups and subnets to match your deployment.
 
-#### creds.yml
-* Determine the following information
+##### properties.yml
+* Minimally determine the following information:
+
     - BROKER_USERNAME: some invented username
     - BROKER_PASSWORD: some invented password
 
-* create a new creds.yml file and place the following contents into it:
+* create a new properties.yml file and place the following contents into it:
     ```yaml
         ---
         properties:
@@ -201,22 +218,109 @@ NB: manually edit to fix hard-coded ip ranges, security groups and subnets to ma
             password: <BROKER_PASSWORD>
     ```
 
-### Generate the Deployment Manifest
+* optionally you can add other properties here:
+    ```config
+     nfsbroker.listen_addr:
+       description: "(optional) address nfsbroker listens on"
+       default: "0.0.0.0:8999"
+     nfsbroker.service_name:
+       description: "(optional) name of the service to be registered with cf"
+       default: "nfs"
+     nfsbroker.service_id:
+       description: "(optional) Id of the service to be registered with cf"
+       default: "nfs-service-guid"
+     nfsbroker.data_dir:
+       description: "(optional) Directory on broker VM to persist instance and binding state"
+       default: "/var/vcap/store/nfsbroker"
+     nfsbroker.db_driver:
+       default: ""
+       description: "(optional) database driver name when using SQL to store broker state"
+     nfsbroker.db_username:
+       default: ""
+       description: "(optional) database username when using SQL to store broker state"
+     nfsbroker.db_password:
+       default: ""
+       description: "(optional) database password when using SQL to store broker state"
+     nfsbroker.db_hostname:
+       default: ""
+       description: "(optional) database hostname when using SQL to store broker state"
+     nfsbroker.db_port:
+       default: ""
+       description: "(optional) database port when using SQL to store broker state"
+     nfsbroker.db_name:
+       default: ""
+       description: "(optional) database name when using SQL to store broker state"
+     nfsbroker.db_ca_cert:
+       default: ""
+       description: "(optional) CA Cert to verify SSL connection, if not include, connection will be plain"
+    ```
+
+    * For example: for a secure mysql database, properties.yml could look like:
+    ```yaml
+        ---
+        properties:
+          nfsbroker:
+            username: <BROKER_USERNAME>
+            password: <BROKER_PASSWORD>
+            db_driver: mysql
+            db_username: <DATABASE_USERNAME>
+            db_password: <DATABASE_PASSWORD>
+            db_hostname: mysql.example.com
+            db_port: 3306
+            db_name: mysql-example
+            db_ca_cert: |
+                -----BEGIN CERTIFICATE-----
+                MIID9DCCAtygAwIBAgIBQjANBgkqhkiG9w0BAQ<...>VMx
+                EzARBgNVBAgMCldhc2hpbmd0b24xEDAOBgNVBA<...>AoM
+                GUFtYXpvbiBXZWIgU2VydmljZXMsIEluYy4xEz<...>FMx
+                GzAZBgNVBAMMEkFtYXpvbiBSRFMgUm9vdCBDQT<...>w0y
+                MDAzMDUwOTExMzFaMIGKMQswCQYDVQQGEwJVUz<...>3Rv
+                bjEQMA4GA1UEBwwHU2VhdHRsZTEiMCAGA1UECg<...>WNl
+                cywgSW5jLjETMBEGA1UECwwKQW1hem9uIFJEUz<...>FJE
+                UyBSb290IENBMIIBIjANBgkqhkiG9w0BAQEFAA<...>Z8V
+                u+VA8yVlUipCZIKPTDcOILYpUe8Tct0YeQQr0u<...>HgF
+                Ji2N3+39+shCNspQeE6aYU+BHXhKhIIStt3r7g<...>Arf
+                AOcjZdJagOMqb3fF46flc8k2E7THTm9Sz4L7RY<...>Ob9
+                T53pQR+xpHW9atkcf3pf7gbO0rlKVSIoUenBlZ<...>I2J
+                P/DSMM3aEsq6ZQkfbz/Ilml+Lx3tJYXUDmp+Zj<...>vwp
+                BIOqsqVVTvw/CwIDAQABo2MwYTAOBgNVHQ8BAf<...>AUw
+                AwEB/zAdBgNVHQ4EFgQUTgLurD72FchM7Sz1Bc<...>oAU
+                TgLurD72FchM7Sz1BcGPnIQISYMwDQYJKoZIhv<...>pAm
+                MjHD5cl6wKjXxScXKtXygWH2BoDMYBJF9yfyKO<...>Aw5
+                2EUuDI1pSBh9BA82/5PkuNlNeSTB3dXDD2PEPd<...>m4r
+                47QPyd18yPHrRIbtBtHR/6CwKevLZ394zgExqh<...>pjf
+                2u6O/+YE2U+qyyxHE5Wd5oqde0oo9UUpFETJPV<...>kIV
+                A9dY7IHSubtCK/i8wxMVqfd5GtbA8mmpeJFwnD<...>UYr
+                /40NawZfTUU=
+                -----END CERTIFICATE-----
+    ```
+* Other notes:
+    > For previously deployed nfs brokers without databases:
+        When you deploy with a database the current state will be lost.
+        This will require a manual cleanup of any existing broker/service
+        instances in your CF environment. You may need to force things:
+    ```bash
+    cf purge-service-instance -f $(cf services | grep nfs* | awk '{print $1}')
+    cf purge-service-offering nfs -f
+    cf delete-service-broker nfsbroker -f
+    ```
+    > Stay tuned for the CF pushable version of this broker.
+#### Generate the Deployment Manifest
 * run the following script:
 
     ```bash
-    $ ./scripts/generate_manifest.sh cf.yml director-uuid.yml iaas.yml creds.yml  
+    $ ./scripts/generate_manifest.sh cf.yml director-uuid.yml iaas.yml properties.yml 
     ```
 
 to generate `nfsvolume-aws-manifest.yml` into the current directory.
 
-### Deploy NFS Broker
+#### Deploy NFS Broker
 * Deploy the broker using the generated manifest:
 
     ```bash
     $ bosh -d nfsvolume-aws-manifest.yml deploy
     ```
-
+    
 ## Deploying the Test NFS Server (Optional)
 
 If you do not have an existing NFS Server then you can optionally deploy the test nfs server bundled in this release.

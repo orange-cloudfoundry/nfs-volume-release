@@ -6,46 +6,47 @@ templates:
 
 packages:
 - golang-nfsvolume
-- nfs_pid_utils
 - nfsbroker
 
 properties:
-  nfsbroker.listen-addr:
-    description: "address nfsbroker listens on"
-    default: "0.0.0.0:8999"
-  nfsbroker.service-name:
-    description: "name of the service to be registered with cf"
-    default: "nfs"
-  nfsbroker.service-id:
-    description: "Id of the service to be registered with cf"
-    default: "nfs-service-guid"
-  nfsbroker.data-dir:
-    description: "Directory on broker VM to persist instance and binding state"
-    default: "/var/vcap/store/nfsbroker"
   nfsbroker.username:
     description: "Basic auth username to verify on incoming Service Broker requests"
     default: "admin"
   nfsbroker.password:
     description: "Basic auth password to verify on incoming Service Broker requests"
-    default: "admin"
-  nfsbroker.dbDriver:
+  nfsbroker.listen_addr:
+    description: "(optional) address nfsbroker listens on"
+    default: "0.0.0.0:8999"
+  nfsbroker.service_name:
+    description: "(optional) name of the service to be registered with cf"
+    default: "nfs"
+  nfsbroker.service_id:
+    description: "(optional) Id of the service to be registered with cf"
+    default: "nfs-service-guid"
+  nfsbroker.data_dir:
+    description: "(optional) Directory on broker VM to persist instance and binding state"
+    default: "/var/vcap/store/nfsbroker"
+  nfsbroker.db_driver:
     default: ""
     description: "(optional) database driver name when using SQL to store broker state"
-  nfsbroker.dbUsername:
+  nfsbroker.db_username:
     default: ""
     description: "(optional) database username when using SQL to store broker state"
-  nfsbroker.dbPassword:
+  nfsbroker.db_password:
     default: ""
     description: "(optional) database password when using SQL to store broker state"
-  nfsbroker.dbHostname:
+  nfsbroker.db_hostname:
     default: ""
     description: "(optional) database hostname when using SQL to store broker state"
-  nfsbroker.dbPort:
+  nfsbroker.db_port:
     default: ""
     description: "(optional) database port when using SQL to store broker state"
-  nfsbroker.dbName:
+  nfsbroker.db_name:
     default: ""
     description: "(optional) database name when using SQL to store broker state"
+  nfsbroker.db_ca_cert:
+    default: ""
+    description: "(optional) CA Cert to verify SSL connection, if not include, connection will be plain"
   nfsbroker.config:
     default: "./config.yml"
     description: "(optional) location for the nfsbroker config file"
@@ -57,3 +58,4 @@ properties:
     description: "Comma separated list of white-listed options that may be configured in the mount_config options, formatted as 'option:default'. If an option is not specified in the volume mount, then the specified default value will be used instead. A specific floppy_mount option tells the driver to ignore unsupported options when set to true, or to fail fast instead when receiving an unsupported option when set to false"
     example: "allow_root:false, allow_other:false, nfs_uid:2000, nfs_gid:2000, auto_cache:true, floppy_mount:true"
     default: "auto_cache:true"
+
