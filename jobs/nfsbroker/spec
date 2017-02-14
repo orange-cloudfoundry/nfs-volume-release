@@ -48,7 +48,7 @@ properties:
     default: ""
     description: "(optional) CA Cert to verify SSL connection, if not include, connection will be plain"
   nfsbroker.allowed-in-source:
-    description: "This is a comma separted list of parameters allowed to be send in share url. Each of this parameters can be specify by brokers"
+    description: "Comma separated list of white-listed options that may be configured in supported in the mount_config.source URL query params. If a non-white-listed option is received from a user as arbitrary params, then the broker will reject the user request."
     example: "uid,gid,auto-traverse-mounts,dircache"
     default: "uid,gid"
   nfsbroker.default-in-source:
