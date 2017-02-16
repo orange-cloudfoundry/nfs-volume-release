@@ -28,3 +28,20 @@ properties:
  nfsv3driver.disable:
    description: "disable nfsv3driver"
    default: false
+ nfsv3driver.allowed-in-source:
+   description: "This is a comma separted list of parameters allowed to be send in share url. Each of this parameters can be specify by brokers"
+   example: "uid,gid,auto-traverse-mounts,dircache"
+   default: "uid,gid"
+  nfsv3driver.default-in-source:
+   description: "This is a comma separted list of like params:value. This list specify default value of parameters. If parameters has default value and is not in allowed list, this default value become a forced value who's cannot be override"
+   example: "gid=1000,auto-traverse-mounts=1"
+   default: ""
+  nfsv3driver.allowed-in-mount:
+   description: "This is a comma separted list of parameters allowed to be send in extra config. Each of this parameters can be specify by brokers"
+   example: ""
+   default: ""
+  nfsv3driver.default-in-mount:
+    description: "This is a comma separted list of like params:value. This list specify default value of parameters. If parameters has default value and is not in allowed list, this default value become a forced value who's cannot be override"
+    example: ""
+    default: ""
+
