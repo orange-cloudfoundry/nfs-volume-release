@@ -21,8 +21,13 @@ params:
   SERVER_ADDRESS: replace-me
   SHARE: replace-me
   PUSHED_BROKER_NAME:
-  DB_SERVICE_INSTANCE_NAME:
-  DB_SERVICE_NAME:
   DB_DRIVER_NAME:
+  DB_HOST:
+  DB_PORT:
+  DB_NAME:
+  DB_USERNAME:
+  DB_PASSWORD:
+  TEST_MULTI_CELL: true
+  TEST_MOUNT_OPTIONS: false
 run:
   path: nfs-volume-release/scripts/ci/run_pats_withsetup
