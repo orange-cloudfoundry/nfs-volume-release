@@ -25,6 +25,8 @@ check_param BROKER_USER
 check_param BROKER_PASSWORD
 check_param SERVER_ADDRESS
 check_param SHARE
+check_param TEST_MULTI_CELL
+check_param TEST_MOUNT_OPTIONS
 
 if [ -z "$APPLICATION_PATH" ]; then
     echo "APPLICATION_PATH cannot be blank"
@@ -32,22 +34,24 @@ if [ -z "$APPLICATION_PATH" ]; then
 fi
 
 pushd ${scripts_path}/../src/code.cloudfoundry.org/nfsbroker
-  ./cp_files.sh
+  GOOS=linux GOARCH=amd64 go build -o bin/nfsbroker
   export BROKER_APPLICATION_PATH=$PWD
 
   if [ -n "$PUSHED_BROKER_NAME" ]; then
 cat << EOF > manifest.yml
 ---
-  buildpack: go_buildpack
+  buildpack: binary_buildpack
   env:
-    GOPACKAGENAME: nfsbroker
-    GOVERSION: go1.7
-    DBSERVICENAME: ${DB_SERVICE_NAME}
     DBDRIVERNAME: ${DB_DRIVER_NAME}
     SERVICENAME: ${SERVICE_NAME}
-    BROKERUSER: ${BROKER_USER}
-    BROKERPASS: ${BROKER_PASSWORD}
+    USERNAME: ${BROKER_USER}
+    PASSWORD: ${BROKER_PASSWORD}
     LOGLEVEL: debug
+    DBHOST: ${DB_HOST}
+    DBPORT: ${DB_PORT}
+    DBNAME: ${DB_NAME}
+    DB_USERNAME: ${DB_USERNAME}
+    DB_PASSWORD: ${DB_PASSWORD}
 EOF
 
   fi
