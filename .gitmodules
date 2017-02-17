@@ -40,8 +40,8 @@
 	branch = master
 [submodule "src/code.cloudfoundry.org/nfsv3driver"]
 	path = src/code.cloudfoundry.org/nfsv3driver
-	url = https://github.com/orange-cloudfoundry/nfsv3driver
-	branch = Config_Customizable
+	url = https://github.com/cloudfoundry-incubator/nfsv3driver
+	branch = master
 [submodule "src/github.com/bmizerany/pat"]
 	path = src/github.com/bmizerany/pat
 	url = https://github.com/bmizerany/pat
@@ -84,8 +84,8 @@
 	branch = master
 [submodule "src/code.cloudfoundry.org/nfsbroker"]
 	path = src/code.cloudfoundry.org/nfsbroker
-	url = https://github.com/orange-cloudfoundry/nfsbroker
-	branch = Config_Customizable
+	url = https://github.com/cloudfoundry-incubator/nfsbroker
+	branch = master
 [submodule "src/github.com/lib/pq"]
 	path = src/github.com/lib/pq
 	url = https://github.com/lib/pq
