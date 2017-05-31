@@ -13,4 +13,4 @@ properties:
     default: "10.0.0.0/8"
  nfstestserver.export_root_path:
     description: "NFS root path"
-    default: "/var/vcap/store"
+    default: "/var/vcap/store/nfstestserver"
